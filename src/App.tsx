@@ -5,33 +5,33 @@ import MovieCard from "./components/MovieCard";
 import MovieList from "./components/MovieList";
 import {MovieForm} from "./components/MovieForm";
 
-
-
 function App() {
-  
   const [movieList, setMovieList] = useState(movies);
 
-  // const [show, setShow] = useState(true);
-  // if (show) {
-  //   const [count, setCount] = useState(0);
-  // }
+  function deleteMovie(id: number) {
+    setMovieList(movieList.filter(movie => movie.id !== id));
+  }
 
-  // const hClear = () => {
-  //   movieList.length = 0;
-  // }
-
-  // const hClear = () => {
-  //   setMovieList([]);
-  // }
+  function handleToggleWatched(id: number) {
+    setMovieList(
+      movieList.map(movie =>
+        movie.id === id ? { ...movie, watched: !movie.watched } : movie
+      )
+    );
+  }
 
   return (
-    <div>
+    <>
       <button onClick={() => setMovieList([])}>Кнопка очистки</button>
-      <p>Всего фильмов: {movieList.length}</p>
-      <MovieForm onAdd={(movie => setMovieList([...movies, movie]))} />
-      <MovieList movies={movieList}/>
-      {movieList.length == 0 && <p>Список пуст!</p>}
-    </div>
+      <div className="counter">Всего фильмов: {movieList.length}</div>
+      <MovieForm onAdd={(movie) => setMovieList([...movieList, movie])} />
+      <MovieList
+        movies={movieList}
+        onDelete={deleteMovie}
+        onToggleWatched={handleToggleWatched}
+      />
+      {movieList.length === 0 && <div>Список пуст!</div>}
+    </>
   );
 }
 
